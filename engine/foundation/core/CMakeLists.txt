@@ -38,9 +38,11 @@ re_add_target(
   BUILD_DEPENDENCIES
     PUBLIC
       External::lz4
+      External::mimalloc
   RUNTIME_DEPENDENCIES
     PUBLIC
       External::lz4
+      External::mimalloc
   COMPILE_DEFINITIONS
     PUBLIC
       ${${PAL_PLATFORM_NAME_UPPERCASE}_COMPILE_DEFS}
