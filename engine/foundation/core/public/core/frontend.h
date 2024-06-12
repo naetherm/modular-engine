@@ -29,6 +29,7 @@
 //[ Includes                                              ]
 //[-------------------------------------------------------]
 #include "core/core.h"
+#include "core/core_types.h"
 
 
 //[-------------------------------------------------------]
@@ -43,4 +44,22 @@ typedef struct me_window_o me_window_o;
 //[-------------------------------------------------------]
 struct me_frontend_api {
   
+  //[-------------------------------------------------------]
+  //[ Display                                               ]
+  //[-------------------------------------------------------]
+  uint32 (*get_num_displays)();
+
+  me_display_o* (*get_display)(uint32 index);
+
+  me_rect_o (*get_display_shape)(const me_display_o* obj);
+
+  void (*update_displays)();
+
+
+  //[-------------------------------------------------------]
+  //[ Window                                                ]
+  //[-------------------------------------------------------]
 };
+
+
+extern struct me_frontend_api* me_frontend_api;
