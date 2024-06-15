@@ -18,11 +18,13 @@
 #// DEALINGS IN THE SOFTWARE.
 #////////////////////////////////////////////////////////////////////////////////////////////////////
 
-################################################################################
-# Current package
-################################################################################
-re_add_subdirectory(foundation)
-re_add_subdirectory(interface)
-re_add_subdirectory(plugins)
-re_add_subdirectory(tests)
-re_add_subdirectory(samples)
+
+set(RE_BUILD_DEPENDENCIES
+  pthread
+  dl
+  atomic
+  ncurses
+  tinfo
+  ${LINUX_X11_LIBS}
+  ${STD_CPP_FS}
+)

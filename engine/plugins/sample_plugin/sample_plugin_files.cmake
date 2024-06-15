@@ -18,11 +18,7 @@
 #// DEALINGS IN THE SOFTWARE.
 #////////////////////////////////////////////////////////////////////////////////////////////////////
 
-################################################################################
-# Current package
-################################################################################
-re_add_subdirectory(foundation)
-re_add_subdirectory(interface)
-re_add_subdirectory(plugins)
-re_add_subdirectory(tests)
-re_add_subdirectory(samples)
+
+set(FILES
+  private/sample_plugin.cpp
+)

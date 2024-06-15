@@ -20,11 +20,12 @@
 
 
 set(RE_BUILD_DEPENDENCIES
-    pthread
-    dl
-    atomic
-    ncurses
-    tinfo
-    ${LINUX_X11_LIBS}
-    ${STD_CPP_FS}
+  pthread
+  dl
+  atomic
+  ncurses
+  tinfo
+  ${LINUX_X11_LIBS}
+  ${LINUX_XCB_LIBS}
+  ${STD_CPP_FS}
 )

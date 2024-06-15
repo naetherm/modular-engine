@@ -52,27 +52,6 @@ function(re_add_target)
   cmake_parse_arguments(re_add_target "${flags}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
   #
-  # Before doing anything else, let's first check whether this library should be reflected
-  #
-  if (re_add_target_REFLECT)
-    # (0) set variables
-    set(RTTI_PROCESS_DIRECTORIES "'''${CMAKE_CURRENT_SOURCE_DIR}/Public'''")
-    set(RTTI_IGNORED_DIRECTORIES "'''${CMAKE_CURRENT_SOURCE_DIR}/Generated'''")
-    set(RTTI_OUTPUT_DIRECTORY "'''${CMAKE_CURRENT_SOURCE_DIR}/Generated'''")
-    # TODO(naetherm): Add all dependencies too
-    set(RTTI_INCLUDED_DIRECTORIES "'''${CMAKE_CURRENT_SOURCE_DIR}/Public'''")
-
-    # (1) Copy and Configure the ReflectionGeneration.toml file
-    configure_file(
-      "${RE_ROOT_DIR}/cmake/Config/ReflectionGeneration.toml.in"
-      "${CMAKE_CURRENT_SOURCE_DIR}/ReflectionGeneration.toml"
-    )
-
-    # (2) Add the directory "${CMAKE_CURRENT_SOURCE_DIR}/Generated" to list of include directories
-
-    # (3) Generate the reflection information
-  endif()
-  #
   #
   #
 
@@ -176,7 +155,6 @@ function(re_add_target)
   elseif(re_add_target_HEADERONLY)
     add_library(${re_add_target_NAME}
       ${target_type_options}
-      ${RE_CURRENT_SOURCES} ${re_add_target_GENERATED_FILES}
       )
   else()
     add_library(${re_add_target_NAME}
@@ -213,17 +191,15 @@ function(re_add_target)
 
           target_include_directories(${re_add_target_NAME} ${target_group} ${${d}_INCLUDE_DIRS})
           target_include_directories(${re_add_target_NAME} ${target_group} ${${d}_EXT_INCLUDE_DIRS})
-          if (${d} MATCHES "Qt5*")
-            target_link_libraries(${re_add_target_NAME} ${target_group} ${d})
-          else()
-            #target_link_libraries(${re_add_target_NAME} ${target_group} ${${d}_LIBRARIES})
-            target_link_libraries(${re_add_target_NAME} ${target_group} ${d})
-            #message("INFO>> $<TARGET_PROPERTY:${d},INTERFACE_LINK_LIBRARIES>")
-            #target_link_libraries(${re_add_target_NAME} PUBLIC $<TARGET_PROPERTY:${d},INTERFACE_LINK_LIBRARIES>)
-            target_include_directories(${re_add_target_NAME} ${target_group} $<TARGET_PROPERTY:${d},INTERFACE_INCLUDE_DIRECTORIES>)
-            target_compile_definitions(${re_add_target_NAME} ${target_group} $<TARGET_PROPERTY:${d},INTERFACE_COMPILE_DEFINITIONS>)
-            target_compile_options(${re_add_target_NAME} ${target_group} $<TARGET_PROPERTY:${d},INTERFACE_COMPILE_OPTIONS>)
-          endif()
+
+          #target_link_libraries(${re_add_target_NAME} ${target_group} ${${d}_LIBRARIES})
+          target_link_libraries(${re_add_target_NAME} ${target_group} ${d})
+          #message("INFO>> $<TARGET_PROPERTY:${d},INTERFACE_LINK_LIBRARIES>")
+          #target_link_libraries(${re_add_target_NAME} PUBLIC $<TARGET_PROPERTY:${d},INTERFACE_LINK_LIBRARIES>)
+          target_include_directories(${re_add_target_NAME} ${target_group} $<TARGET_PROPERTY:${d},INTERFACE_INCLUDE_DIRECTORIES>)
+          target_compile_definitions(${re_add_target_NAME} ${target_group} $<TARGET_PROPERTY:${d},INTERFACE_COMPILE_DEFINITIONS>)
+          target_compile_options(${re_add_target_NAME} ${target_group} $<TARGET_PROPERTY:${d},INTERFACE_COMPILE_OPTIONS>)
+
           add_dependencies(${re_add_target_NAME} ${d})
           # target_include_directories(${re_add_target_NAME} ${RE_CURRENT_EXT_INCLUDE_DIRS})
         else()
@@ -296,7 +272,11 @@ macro(re_configure_target_platform_properties)
       # ly_target_link_libraries
       foreach(item ${RE_BUILD_DEPENDENCIES})
         #message("RE_BUILD_DEPENDENCIES[item]: ${item}")
-        target_link_libraries(${re_add_target_NAME} PRIVATE ${item})
+        if (re_add_target_HEADERONLY)
+          target_link_libraries(${re_add_target_NAME} ${linking_options} ${item})
+        else()
+          target_link_libraries(${re_add_target_NAME} PRIVATE ${item})
+        endif()
       endforeach()
     endif()
     if(RE_RUNTIME_DEPENDENCIES)

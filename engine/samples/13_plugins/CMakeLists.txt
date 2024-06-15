@@ -18,11 +18,29 @@
 #// DEALINGS IN THE SOFTWARE.
 #////////////////////////////////////////////////////////////////////////////////////////////////////
 
-################################################################################
-# Current package
-################################################################################
-re_add_subdirectory(foundation)
-re_add_subdirectory(interface)
-re_add_subdirectory(plugins)
-re_add_subdirectory(tests)
-re_add_subdirectory(samples)
+
+##################################################
+## Project
+##################################################
+re_add_target(
+  NAME 13_plugins EXECUTABLE
+  NAMESPACE ME
+  FILES_CMAKE
+    ${CMAKE_CURRENT_SOURCE_DIR}/13_plugins_files.cmake
+  INCLUDE_DIRECTORIES
+    PUBLIC
+      ${RE_CONFIG_FILE_LOCATION}
+      ${CMAKE_CURRENT_SOURCE_DIR}/private
+  BUILD_DEPENDENCIES
+    PUBLIC
+      core
+  RUNTIME_DEPENDENCIES
+    PUBLIC
+      core
+  COMPILE_DEFINITIONS
+    PUBLIC
+      ${${PAL_PLATFORM_NAME_UPPERCASE}_COMPILE_DEFS}
+      ${PAL_PLATFORM_NAME_UPPERCASE}
+  TARGET_PROPERTIES
+    -fPIC
+)

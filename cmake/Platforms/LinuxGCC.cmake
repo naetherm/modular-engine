@@ -75,6 +75,21 @@ set(LINUX_X11_LIB X11)   # X-Lib
 set(LINUX_XEXT_LIB Xext)   # X extentions library
 set(LINUX_XCURSOR_LIB Xcursor)  # X cursor library
 
+set(LINUX_XCB_LIBS
+  xcb
+  xcb-util
+  xcb-icccm
+  xcb-ewmh
+  xcb-keysyms
+  xcb-randr
+  xcb-cursor
+  xcb-image
+  xcb-xkb
+  xcb-xrm
+  xkbcommon
+  xkbcommon-x11
+)
+
 set(LINUX_UUID_LIB uuid)
 
 

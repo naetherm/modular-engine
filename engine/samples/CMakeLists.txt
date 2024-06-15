@@ -21,8 +21,7 @@
 ################################################################################
 # Current package
 ################################################################################
-re_add_subdirectory(foundation)
-re_add_subdirectory(interface)
-re_add_subdirectory(plugins)
-re_add_subdirectory(tests)
-re_add_subdirectory(samples)
+re_add_subdirectory(10_hello_world)
+re_add_subdirectory(11_single_window)
+re_add_subdirectory(12_multiple_windows)
+re_add_subdirectory(13_plugins)

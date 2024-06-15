@@ -20,8 +20,12 @@
 
 
 set(FILES
+    private/allocator.cpp
+    private/api_registry.cpp
     private/assert.cpp
     private/format.cpp
     private/log.cpp
     private/math.cpp
+    private/plugin.cpp
+    private/string_hash.cpp
 )

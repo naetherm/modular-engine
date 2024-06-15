@@ -39,6 +39,42 @@ typedef struct me_display_o me_display_o;
 typedef struct me_window_o me_window_o;
 
 
+typedef struct me_linux_window_data_t {
+  uint64* connection;
+  uint64 window;
+} me_linux_window_data_t;
+
+typedef struct me_generic_window_data_t {
+  union {
+    me_linux_window_data_t linux;
+  };
+} me_generic_window_data_t;
+
+typedef struct me_window_state_t {
+  bool is_focused;
+
+  bool is_under_mouse;
+
+  bool is_minimized;
+
+  bool is_maximized;
+
+  bool is_hidden;
+
+  bool was_maximized_before;
+
+  bool support_hidden;
+
+  bool support_maximize_horizontal;
+
+  bool support_maximize_vertical;
+
+  bool support_active_window;
+
+  bool support_move_resize;
+} me_window_state_t;
+
+
 //[-------------------------------------------------------]
 //[ Classes                                               ]
 //[-------------------------------------------------------]
@@ -59,6 +95,25 @@ struct me_frontend_api {
   //[-------------------------------------------------------]
   //[ Window                                                ]
   //[-------------------------------------------------------]
+  me_window_o* (*create)(const char* title, me_rect_o shape);
+
+  void (*destroy)(me_window_o* window);
+
+  void (*update)(me_window_o* window);
+
+  int32 (*get_num_of_windows)();
+
+  bool (*requested_closing)(me_window_o* window);
+
+  me_generic_window_data_t (*generic_window_data)(me_window_o* window);
+
+  void (*set_title)(me_window_o* window, const char* title);
+
+  void (*set_shape)(me_window_o* window, me_rect_o shape);
+
+  me_rect_o (*get_shape)(me_window_o* window);
+
+  me_window_state_t (*get_state)(me_window_o* window);
 };
 
 

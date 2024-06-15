@@ -22,54 +22,42 @@
 //[-------------------------------------------------------]
 //[ Includes                                              ]
 //[-------------------------------------------------------]
-#include "core/assert.h"
-#include "core/format.h"
-#include <cstdio>
-#include <cstdlib>
+#include "core/allocator.h"
+#include <mimalloc.h>
 
 
-static void me_assert_logger_assert_error(me_error_o* i, const char* file, uint32 line, const char* fmt, ...) {
-  va_list args;
-  va_start(args, fmt);
-
-  va_list args2;
-  va_copy(args2, args);
-  int ret = me_vsnprintf(nullptr, 0, fmt, args2);
-  va_end(args2);
-
-  if (ret >= 2048) {
-    const size_t buffer_size = (size_t)ret + 1;
-    char *buffer = static_cast<char *>(malloc(buffer_size));
-    if (buffer) {
-      ret = me_vsnprintf(buffer, (int)buffer_size, fmt, args);
-
-      free(buffer);
-      va_end(args);
-      return;
-    }
+static void* system_alloc(void* old_ptr, uint64 old_size, uint64 new_size, const char* filepath, uint32 line) {
+  void* ptr = nullptr;
+  
+  if (new_size) {
+    ptr = mi_realloc(old_ptr, new_size);
+  } else {
+    mi_free(old_ptr);
   }
-
-  char buffer[2048];
-  ret = me_vsnprintf(buffer, sizeof(buffer), fmt, args);
-
-  va_end(args);
+  
+  return ptr;
 }
 
-static void me_assert_logger_assert_fatal(me_error_o* i, const char* file, uint32 line, const char* fmt, ...) {
-
+static me_allocator_inst* create_allocator() {
+  me_allocator_inst* inst = new  me_allocator_inst{
+    .alloc = system_alloc
+  };
+  
+  return inst;
 }
 
+static void destroy_allocator(me_allocator_inst* obj) {
+  delete obj;
+}
 
-static me_error_inst logger_assert = {
-  .error = me_assert_logger_assert_error,
-  .fatal = me_assert_logger_assert_fatal
+static me_allocator_inst system_allocator = {
+  .alloc = system_alloc
 };
 
-
-static struct me_error_api error = {
-  .logger_assert = &logger_assert,
-  .default_assert = &logger_assert
+struct me_allocator_api me_allocator = {
+  .system = &system_allocator,
+  .create = create_allocator,
+  .destroy = destroy_allocator
 };
 
-
-struct me_error_api* me_error_api = &error;
+struct me_allocator_api* me_allocator_api = &me_allocator;

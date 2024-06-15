@@ -18,11 +18,16 @@
 #// DEALINGS IN THE SOFTWARE.
 #////////////////////////////////////////////////////////////////////////////////////////////////////
 
-################################################################################
-# Current package
-################################################################################
-re_add_subdirectory(foundation)
-re_add_subdirectory(interface)
-re_add_subdirectory(plugins)
-re_add_subdirectory(tests)
-re_add_subdirectory(samples)
+
+##################################################
+## Project
+##################################################
+add_library(rhi INTERFACE)
+target_include_directories(
+  rhi
+  INTERFACE
+  ${RE_CONFIG_FILE_LOCATION}
+  ${CMAKE_CURRENT_SOURCE_DIR}/public)
+target_link_libraries(core
+    PUBLIC
+    rhi)
