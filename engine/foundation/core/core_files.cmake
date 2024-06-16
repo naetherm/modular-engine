@@ -24,6 +24,7 @@ set(FILES
     private/api_registry.cpp
     private/assert.cpp
     private/format.cpp
+    private/input.cpp
     private/log.cpp
     private/math.cpp
     private/plugin.cpp

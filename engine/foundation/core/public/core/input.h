@@ -30,8 +30,27 @@
 //[-------------------------------------------------------]
 #include "core/core.h"
 #include "core/core_types.h"
+#include "core/input_types.h"
 
 
 //[-------------------------------------------------------]
 //[ Forward declarations                                  ]
 //[-------------------------------------------------------]
+
+
+//[-------------------------------------------------------]
+//[ Classes                                               ]
+//[-------------------------------------------------------]
+struct me_input_device_o {
+
+};
+
+struct me_input_api {
+
+  void (*add_device)(me_input_device_o* device);
+
+  void (*remove_device)(me_input_device_o* device);
+};
+
+
+extern struct me_input_api* me_input_api;
