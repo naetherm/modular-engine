@@ -44,9 +44,15 @@ typedef struct me_linux_window_data_t {
   uint64 window;
 } me_linux_window_data_t;
 
+typedef struct me_windows_window_data_t {
+  uint64 hwnd;
+  uint64 window;
+} me_windows_window_data_t;
+
 typedef struct me_generic_window_data_t {
   union {
     me_linux_window_data_t linux;
+    me_windows_window_data_t windows;
   };
 } me_generic_window_data_t;
 
