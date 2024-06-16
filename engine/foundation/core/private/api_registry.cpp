@@ -39,10 +39,8 @@ namespace api_registry {
 static void set(const char* name, void* api) {
   uint32 name_hash = me_string_hash_api->hash(name);
   
-  ME_LOG("The hash for '%s' is %d", name, name_hash);
-  
-  if (internal::apis.contains(name_hash)) {
-    // Nothing to do here
+  if (!internal::apis.contains(name_hash)) {
+    internal::apis[name_hash] = api;
   }
 }
 
@@ -81,4 +79,4 @@ static struct me_api_registry_api api = {
   .get = api_registry::get
 };
 
-struct me_api_registry_api* me_api_registry_api = &api;
+struct me_api_registry_api* api_registry_api = &api;

@@ -22,19 +22,29 @@
 //[-------------------------------------------------------]
 //[ Includes                                              ]
 //[-------------------------------------------------------]
+#include "sample_plugin.h"
 #include <core/core_types.h>
 #include <core/api_registry.h>
 #include <core/log.h>
+#include <cstdio>
 
+static void sample_plugin_test_call() {
+  ME_LOG("static void sample_plugin_test_call()\n");
+}
+
+
+static struct me_foobar_api me_foobar = {
+  .test_call = sample_plugin_test_call
+};
 
 //[-------------------------------------------------------]
 //[ Forward declarations                                  ]
 //[-------------------------------------------------------]
 extern "C" void me_plugin_loader(struct me_api_registry_api* api_registry, bool load) {
-    if (load) {
-      ME_LOG("Loading external sample_plugin");
-      api_registry->set("foobar", nullptr);
-    } else {
-      ME_LOG("Unloading external sample_plugin");
-    }
+  if (load) {
+    ME_LOG("Loading external sample_plugin");
+    api_registry->set(ME_SAMPLE_PLUGIN_FOOBAR_API, &me_foobar);
+  } else {
+    ME_LOG("Unloading external sample_plugin");
+  }
 };

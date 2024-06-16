@@ -34,6 +34,7 @@ re_add_target(
   BUILD_DEPENDENCIES
     PUBLIC
       core
+      sample_plugin
   RUNTIME_DEPENDENCIES
     PUBLIC
       core

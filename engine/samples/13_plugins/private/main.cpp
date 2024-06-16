@@ -23,9 +23,15 @@
 //[ Header Guard                                          ]
 //[-------------------------------------------------------]
 #include <core/core_types.h>
+#include <core/api_registry.h>
 #include <core/log.h>
 #include <core/plugin.h>
 #include <application/application.h>
+#include <sample_plugin.h>
+
+struct me_foobar_api* me_foobar_api;
+extern struct me_plugin_api* me_plugin_api;
+extern struct me_api_registry_api* api_registry_api;
 
 struct me_application_o {
   
@@ -44,6 +50,10 @@ static void this_destroy(me_application_o* obj) {
 static void this_update(me_application_o* obj) {
   uint64 plugin_id = me_plugin_api->load("./libsample_plugin.so");
   
+  // Now the api should also be available through the api_registry
+  struct me_foobar_api* sample_api = (struct me_foobar_api*)(api_registry_api->get(ME_SAMPLE_PLUGIN_FOOBAR_API));
+  sample_api->test_call();
+
   me_plugin_api->unload(plugin_id);
 }
 

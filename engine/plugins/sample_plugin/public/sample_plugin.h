@@ -28,22 +28,13 @@
 //[-------------------------------------------------------]
 //[ Includes                                              ]
 //[-------------------------------------------------------]
-#include "core/core.h"
-#include "core/core_types.h"
+#include <core/core.h>
+#include <core/core_types.h>
 
 
-//[-------------------------------------------------------]
-//[ Forward declarations                                  ]
-//[-------------------------------------------------------]
-struct me_api_registry_api {
-  
-  void (*set)(const char* name, void* api);
-  
-  void (*set_or_update)(const char* name, void* api);
-  
-  void (*remove)(const char* name);
-  
-  void* (*get)(const char* name);
+#define ME_SAMPLE_PLUGIN_FOOBAR_API "foobar"
+
+
+struct me_foobar_api {
+  void (*test_call)();
 };
-
-extern "C" struct me_api_registry_api* api_registry_api;

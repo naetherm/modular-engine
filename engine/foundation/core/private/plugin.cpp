@@ -30,6 +30,9 @@
 #include <vector>
 
 
+extern struct me_api_registry_api* api_registry_api;
+
+
 //[-------------------------------------------------------]
 //[ Forward declarations                                  ]
 //[-------------------------------------------------------]
@@ -55,7 +58,7 @@ static uint64 load(const char* path) {
   plugin->dynlib = me_os_api->dynlib->open(path);
   plugin->load_func = (me_plugin_load_func*)me_os_api->dynlib->get_symbol(plugin->dynlib, "me_plugin_loader");
   
-  plugin->load_func(me_api_registry_api, true);
+  plugin->load_func(api_registry_api, true);
   
   internal::plugins.push_back(plugin);
   
@@ -66,7 +69,7 @@ static void unload(uint64 plugin_id) {
   internal::p_plugin_o* plugin = internal::plugins.at(plugin_id);
   
   
-  plugin->load_func(me_api_registry_api, false);
+  plugin->load_func(api_registry_api, false);
   plugin->load_func = nullptr;
   
   me_os_api->dynlib->close(plugin->dynlib);
