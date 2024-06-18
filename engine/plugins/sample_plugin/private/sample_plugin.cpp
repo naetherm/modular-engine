@@ -28,6 +28,7 @@
 #include <core/log.h>
 #include <cstdio>
 
+
 static void sample_plugin_test_call() {
   ME_LOG("static void sample_plugin_test_call()\n");
 }
@@ -46,5 +47,6 @@ extern "C" void me_plugin_loader(struct me_api_registry_api* api_registry, bool 
     api_registry->set(ME_SAMPLE_PLUGIN_FOOBAR_API, &me_foobar);
   } else {
     ME_LOG("Unloading external sample_plugin");
+    api_registry->remove(ME_SAMPLE_PLUGIN_FOOBAR_API);
   }
 };
