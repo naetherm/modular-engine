@@ -35,6 +35,31 @@
 //[-------------------------------------------------------]
 //[ Forward declarations                                  ]
 //[-------------------------------------------------------]
+enum me_file_mode_t {
+  ME_FILE_MODE_READ = 0,
+  ME_FILE_MODE_WRITE,
+  ME_FILE_MODE_APPEND
+};
+
+
+//[-------------------------------------------------------]
+//[ Forward declarations                                  ]
+//[-------------------------------------------------------]
+struct me_file_stats_o {
+  bool is_file;
+
+  bool exists;
+};
+
+struct me_file_time_o {
+  uint64 time;
+};
+
+struct me_file_o {
+  uint64 handle;
+
+  bool is_valid;
+};
 
 
 //[-------------------------------------------------------]
@@ -42,7 +67,25 @@
 //[-------------------------------------------------------]
 
 struct me_io_api {
+
+//[-------------------------------------------------------]
+//[ Filesystem methods                                    ]
+//[-------------------------------------------------------]
+  me_file_stats_o (*get_stats)(const char* path);
+
+//[-------------------------------------------------------]
+//[ File methods                                          ]
+//[-------------------------------------------------------]
+  me_file_o (*open_file)(const char* path, int32 mode);
   
+  int64 (*read)(me_file_o obj, void* buffer, uint64 readSize);
+
+  bool (*write)(me_file_o obj, const void* buffer, uint64 writeSize);
+
+  uint64 (*get_size)(me_file_o obj);
+
+  void (*close_file)(me_file_o obj);
+
 };
 
 
